@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Campo Magnético</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { color: #333; }
+        input, button { margin: 5px 0; padding: 8px; width: 100%; }
+        .resultado { margin-top: 15px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Campo Magnético</h1>
+    <label for="b">Campo Magnético B (T):</label>
+    <input type="number" id="b" step="any">
+
+    <label for="i">Corriente I (A):</label>
+    <input type="number" id="i" step="any">
+
+    <label for="r">Radio r (m):</label>
+    <input type="number" id="r" step="any">
+
+    <button onclick="calcular()">Calcular</button>
+    <button onclick="limpiar()">Limpiar</button>
+
+    <div class="resultado" id="resultado"></div>
+    <a href="electromagnetismo.html" class="volver">🔙 Regresar al menú de Electromagnetismo</a>
+
+    <script>
+        const u = 1.256637e-6;
+
+        function calcular() {
+            const b = parseFloat(document.getElementById('b').value);
+            const i = parseFloat(document.getElementById('i').value);
+            const r = parseFloat(document.getElementById('r').value);
+            const resultado = document.getElementById('resultado');
+
+            if ([b, i, r].filter(v => !isNaN(v) && v < 0).length > 0) {
+                resultado.innerText = "Por favor, ingresa valores positivos.";
+                return;
+            }
+
+            const valores = [!isNaN(b), !isNaN(i), !isNaN(r)].filter(Boolean).length;
+            if (valores !== 2) {
+                resultado.innerText = "Por favor, ingresa exactamente dos valores.";
+                return;
+            }
+
+            if (!isNaN(i) && !isNaN(r)) {
+                const bCalc = (u * i) / (2 * Math.PI * r);
+                resultado.innerText = `B = (μ * I) / (2π * r) = ${bCalc} T`;
+            } else if (!isNaN(b) && !isNaN(r)) {
+                const iCalc = (b * 2 * Math.PI * r) / u;
+                resultado.innerText = `I = (B * 2π * r) / μ = ${iCalc} A`;
+            } else if (!isNaN(b) && !isNaN(i)) {
+                const rCalc = (u * i) / (2 * Math.PI * b);
+                resultado.innerText = `r = (μ * I) / (2π * B) = ${rCalc} m`;
+            } else {
+                resultado.innerText = "Error inesperado. Verifica los datos.";
+            }
+        }
+
+        function limpiar() {
+            document.getElementById('b').value = "";
+            document.getElementById('i').value = "";
+            document.getElementById('r').value = "";
+            document.getElementById('resultado').innerText = "";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Longitud Relativista</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { color: #333; }
+        input, button { margin: 5px 0; padding: 8px; width: 100%; }
+        .resultado { margin-top: 15px; font-weight: bold; }
+        a.volver { display: inline-block; margin-top: 20px; text-decoration: none; color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Longitud Relativista</h1>
+
+    <label for="l">Longitud L (m):</label>
+    <input type="number" id="l" step="any">
+
+    <label for="lo">Longitud propia Lo (m):</label>
+    <input type="number" id="lo" step="any">
+
+    <label for="v">Velocidad v (m/s):</label>
+    <input type="number" id="v" step="any">
+
+    <button onclick="calcular()">Calcular</button>
+    <button onclick="limpiar()">Limpiar</button>
+
+    <div class="resultado" id="resultado"></div>
+
+    <a href="relatividad.html" class="volver">🔙 Regresar al menú de Relatividad</a>
+
+    <script>
+        const c = 3.0e8;
+
+        function calcular() {
+            const l = parseFloat(document.getElementById('l').value);
+            const lo = parseFloat(document.getElementById('lo').value);
+            const v = parseFloat(document.getElementById('v').value);
+            const r = document.getElementById('resultado');
+
+            if ([l, lo, v].filter(val => !isNaN(val) && val < 0).length > 0) {
+                r.innerText = "Por favor, ingresa valores positivos.";
+                return;
+            }
+
+            const count = [!isNaN(l), !isNaN(lo), !isNaN(v)].filter(Boolean).length;
+            if (count !== 2) {
+                r.innerText = "Por favor, ingresa exactamente dos valores.";
+                return;
+            }
+
+            if (!isNaN(lo) && !isNaN(v)) {
+                const lCalc = lo * Math.sqrt(1 - (v ** 2 / c ** 2));
+                r.innerText = `L = Lo * √(1 - v²/c²) = ${lCalc} m`;
+            } else if (!isNaN(l) && !isNaN(v)) {
+                const loCalc = l / Math.sqrt(1 - (v ** 2 / c ** 2));
+                r.innerText = `Lo = L / √(1 - v²/c²) = ${loCalc} m`;
+            } else if (!isNaN(l) && !isNaN(lo)) {
+                const vCalc = Math.sqrt(c ** 2 * (1 - Math.sqrt(l / lo)));
+                r.innerText = `v = √(c² * (1 - √(L/Lo))) = ${vCalc} m/s`;
+            } else {
+                r.innerText = "Error inesperado. Verifica los datos.";
+            }
+        }
+
+        function limpiar() {
+            document.getElementById('l').value = "";
+            document.getElementById('lo').value = "";
+            document.getElementById('v').value = "";
+            document.getElementById('resultado').innerText = "";
+        }
+    </script>
+</body>
+</html>

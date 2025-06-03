@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Densidad - Hidrostática</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef6fb;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            margin: 15px 10px 0 0;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #calcularButton {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        #limpiarButton {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Cálculo de Densidad</h1>
+
+    <label for="densidad">Densidad (kg/m³):</label>
+    <input type="number" id="densidad">
+
+    <label for="masa">Masa (kg):</label>
+    <input type="number" id="masa">
+
+    <label for="volumen">Volumen (m³):</label>
+    <input type="number" id="volumen">
+
+    <button id="calcularButton" onclick="calcular()">Calcular</button>
+    <button id="limpiarButton" onclick="limpiar()">Limpiar</button>
+
+    <div id="resultado"></div>
+
+    <a href="hidrostatica.html">← Volver a Hidrostática</a>
+
+    <script>
+        function calcular() {
+            const d = parseFloat(document.getElementById('densidad').value);
+            const m = parseFloat(document.getElementById('masa').value);
+            const v = parseFloat(document.getElementById('volumen').value);
+
+            const dValido = !isNaN(d);
+            const mValido = !isNaN(m);
+            const vValido = !isNaN(v);
+
+            const cantidadIngresada = [dValido, mValido, vValido].filter(Boolean).length;
+            const resultado = document.getElementById('resultado');
+
+            if (cantidadIngresada === 2) {
+                if (!dValido && mValido && vValido) {
+                    const densidad = m / v;
+                    resultado.innerText = `D = m / V = ${m} / ${v} = ${densidad.toFixed(2)} kg/m³`;
+                } else if (!mValido && dValido && vValido) {
+                    const masa = d * v;
+                    resultado.innerText = `m = D * V = ${d} * ${v} = ${masa.toFixed(2)} kg`;
+                } else if (!vValido && dValido && mValido) {
+                    const volumen = m / d;
+                    resultado.innerText = `V = m / D = ${m} / ${d} = ${volumen.toFixed(4)} m³`;
+                }
+            } else {
+                resultado.innerText = "Por favor, ingresa solo dos valores para calcular el tercero.";
+            }
+        }
+
+        function limpiar() {
+            document.getElementById('densidad').value = '';
+            document.getElementById('masa').value = '';
+            document.getElementById('volumen').value = '';
+            document.getElementById('resultado').innerText = '';
+        }
+    </script>
+
+</body>
+</html>

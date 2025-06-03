@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Masa Relativista</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { color: #333; }
+        input, button { margin: 5px 0; padding: 8px; width: 100%; }
+        .resultado { margin-top: 15px; font-weight: bold; }
+        a.volver { display: inline-block; margin-top: 20px; text-decoration: none; color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Masa Relativista</h1>
+
+    <label for="m">Masa m (kg):</label>
+    <input type="number" id="m" step="any">
+
+    <label for="mo">Masa en reposo mo (kg):</label>
+    <input type="number" id="mo" step="any">
+
+    <label for="v">Velocidad v (m/s):</label>
+    <input type="number" id="v" step="any">
+
+    <button onclick="calcular()">Calcular</button>
+    <button onclick="limpiar()">Limpiar</button>
+
+    <div class="resultado" id="resultado"></div>
+
+    <a href="relatividad.html" class="volver">🔙 Regresar al menú de Relatividad</a>
+
+    <script>
+        const c = 3.0e8;
+
+        function calcular() {
+            const m = parseFloat(document.getElementById('m').value);
+            const mo = parseFloat(document.getElementById('mo').value);
+            const v = parseFloat(document.getElementById('v').value);
+            const r = document.getElementById('resultado');
+
+            if ([m, mo, v].filter(val => !isNaN(val) && val < 0).length > 0) {
+                r.innerText = "Por favor, ingresa valores positivos.";
+                return;
+            }
+
+            const count = [!isNaN(m), !isNaN(mo), !isNaN(v)].filter(Boolean).length;
+            if (count !== 2) {
+                r.innerText = "Por favor, ingresa exactamente dos valores.";
+                return;
+            }
+
+            if (!isNaN(mo) && !isNaN(v)) {
+                const mCalc = mo / Math.sqrt(1 - (v ** 2 / c ** 2));
+                r.innerText = `m = mo / √(1 - v²/c²) = ${mCalc} kg`;
+            } else if (!isNaN(m) && !isNaN(v)) {
+                const moCalc = m * Math.sqrt(1 - (v ** 2 / c ** 2));
+                r.innerText = `mo = m * √(1 - v²/c²) = ${moCalc} kg`;
+            } else if (!isNaN(m) && !isNaN(mo)) {
+                const vCalc = Math.sqrt(c ** 2 * (1 - Math.sqrt(mo / m)));
+                r.innerText = `v = √(c² * (1 - √(mo/m))) = ${vCalc} m/s`;
+            } else {
+                r.innerText = "Error inesperado. Verifica los datos.";
+            }
+        }
+
+        function limpiar() {
+            document.getElementById('m').value = "";
+            document.getElementById('mo').value = "";
+            document.getElementById('v').value = "";
+            document.getElementById('resultado').innerText = "";
+        }
+    </script>
+</body>
+</html>

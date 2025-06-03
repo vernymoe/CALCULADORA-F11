@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Presión en un líquido - Hidrostática</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6f2ff;
+            padding: 20px;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #calcularButton {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        #limpiarButton {
+            background-color: #6c757d;
+            color: white;
+            margin-left: 10px;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            white-space: pre-line;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Presión en un líquido</h1>
+
+    <label for="presion">Presión (Pa):</label>
+    <input type="number" id="presion">
+
+    <label for="densidad">Densidad (kg/m³):</label>
+    <input type="number" id="densidad">
+
+    <label for="profundidad">Profundidad (m):</label>
+    <input type="number" id="profundidad">
+
+    <label for="presionAbsoluta">Presión absoluta (Pa):</label>
+    <input type="number" id="presionAbsoluta">
+
+    <button id="calcularButton" onclick="calcularPresionLiquido()">Calcular</button>
+    <button id="limpiarButton" onclick="limpiar()">Limpiar</button>
+
+    <div id="resultado"></div>
+
+    <a href="hidrostatica.html">← Volver a Hidrostática</a>
+
+    <script>
+        function calcularPresionLiquido() {
+            const g = 9.8;
+            const atm = 101325;
+
+            const presion = parseFloat(document.getElementById('presion').value);
+            const densidad = parseFloat(document.getElementById('densidad').value);
+            const profundidad = parseFloat(document.getElementById('profundidad').value);
+            const presionAbsoluta = parseFloat(document.getElementById('presionAbsoluta').value);
+
+            const pVal = !isNaN(presion);
+            const dVal = !isNaN(densidad);
+            const hVal = !isNaN(profundidad);
+            const pAbsVal = !isNaN(presionAbsoluta);
+
+            const valores = [pVal, dVal, hVal, pAbsVal].filter(Boolean).length;
+
+            const res = document.getElementById('resultado');
+
+            if ([presion, densidad, profundidad, presionAbsoluta].some(v => v != null && v < 0)) {
+                res.innerText = "Por favor, ingresa valores positivos.";
+                return;
+            }
+
+            if (valores !== 2) {
+                res.innerText = "Por favor, ingresa exactamente dos valores.";
+                return;
+            }
+
+            if (dVal && hVal) {
+                const p = densidad * g * profundidad;
+                const pAbs = p + atm;
+                res.innerText = `P = D·g·h = ${densidad}·${g}·${profundidad} = ${p.toFixed(2)} Pa\nPabs = P + atm = ${p.toFixed(2)} + ${atm} = ${pAbs.toFixed(2)} Pa`;
+            } else if (pAbsVal && hVal) {
+                const d = (presionAbsoluta - atm) / (g * profundidad);
+                const p = presionAbsoluta - atm;
+                res.innerText = `D = (Pabs - atm) / (g·h) = (${presionAbsoluta} - ${atm}) / (${g}·${profundidad}) = ${d.toFixed(2)} kg/m³\nP = ${p.toFixed(2)} Pa`;
+            } else if (pAbsVal && dVal) {
+                const h = (presionAbsoluta - atm) / (g * densidad);
+                const p = presionAbsoluta - atm;
+                res.innerText = `h = (Pabs - atm) / (D·g) = (${presionAbsoluta} - ${atm}) / (${densidad}·${g}) = ${h.toFixed(4)} m\nP = ${p.toFixed(2)} Pa`;
+            } else if (pVal && hVal) {
+                const d = presion / (g * profundidad);
+                const pAbs = presion + atm;
+                res.innerText = `D = P / (g·h) = ${presion} / (${g}·${profundidad}) = ${d.toFixed(2)} kg/m³\nPabs = P + atm = ${presion} + ${atm} = ${pAbs.toFixed(2)} Pa`;
+            } else if (pVal && dVal) {
+                const h = presion / (g * densidad);
+                const pAbs = presion + atm;
+                res.innerText = `h = P / (g·D) = ${presion} / (${g}·${densidad}) = ${h.toFixed(4)} m\nPabs = P + atm = ${presion} + ${atm} = ${pAbs.toFixed(2)} Pa`;
+            }
+        }
+
+        function limpiar() {
+            document.getElementById('presion').value = '';
+            document.getElementById('densidad').value = '';
+            document.getElementById('profundidad').value = '';
+            document.getElementById('presionAbsoluta').value = '';
+            document.getElementById('resultado').innerText = '';
+        }
+    </script>
+
+</body>
+</html>

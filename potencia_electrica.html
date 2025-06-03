@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Potencia Eléctrica</title>
+    <a href="electromagnetismo.html" class="volver">🔙 Regresar al menú de Electromagnetismo</a>
+
+    <script>
+        function calcular() {
+            let p = parseFloat(document.getElementById("p").value);
+            let i = parseFloat(document.getElementById("i").value);
+            let v = parseFloat(document.getElementById("v").value);
+            let r = parseFloat(document.getElementById("r").value);
+            let datos = [p, i, v, r].filter(x => !isNaN(x));
+            let resultado = "";
+            let f = x => parseFloat(x).toFixed(4);
+
+            if (datos.length !== 2) {
+                resultado = "Por favor, ingresa exactamente dos valores.";
+            } else {
+                if (!isNaN(i) && !isNaN(v)) {
+                    resultado += `P = I * V = ${i} * ${v} = ${f(i * v)} W<br>`;
+                    resultado += `R = V / I = ${v} / ${i} = ${f(v / i)} Ω`;
+                } else if (!isNaN(p) && !isNaN(v)) {
+                    resultado += `I = P / V = ${p} / ${v} = ${f(p / v)} A<br>`;
+                    resultado += `R = V² / P = (${v}²) / ${p} = ${f((v * v) / p)} Ω`;
+                } else if (!isNaN(p) && !isNaN(i)) {
+                    resultado += `V = P / I = ${p} / ${i} = ${f(p / i)} V<br>`;
+                    resultado += `R = P / I² = ${p} / (${i}²) = ${f(p / (i * i))} Ω`;
+                } else if (!isNaN(i) && !isNaN(r)) {
+                    resultado += `P = I² * R = (${i}²) * ${r} = ${f((i * i) * r)} W<br>`;
+                    resultado += `V = I * R = ${i} * ${r} = ${f(i * r)} V`;
+                } else if (!isNaN(p) && !isNaN(r)) {
+                    resultado += `I = √(P / R) = √(${p} / ${r}) = ${f(Math.sqrt(p / r))} A<br>`;
+                    resultado += `V = √(P * R) = √(${p} * ${r}) = ${f(Math.sqrt(p * r))} V`;
+                } else if (!isNaN(v) && !isNaN(r)) {
+                    resultado += `P = V² / R = (${v}²) / ${r} = ${f((v * v) / r)} W<br>`;
+                    resultado += `I = V / R = ${v} / ${r} = ${f(v / r)} A`;
+                }
+            }
+
+            document.getElementById("resultado").innerHTML = resultado;
+        }
+
+        function limpiar() {
+            document.getElementById("p").value = "";
+            document.getElementById("i").value = "";
+            document.getElementById("v").value = "";
+            document.getElementById("r").value = "";
+            document.getElementById("resultado").innerHTML = "";
+        }
+    </script>
+</head>
+<body>
+    <h2>Potencia Eléctrica</h2>
+    <label>P (W): <input type="number" id="p"></label><br>
+    <label>I (A): <input type="number" id="i"></label><br>
+    <label>V (V): <input type="number" id="v"></label><br>
+    <label>R (Ω): <input type="number" id="r"></label><br><br>
+    <button onclick="calcular()">Calcular</button>
+    <button onclick="limpiar()">Limpiar</button>
+    <p id="resultado"></p>
+</body>
+</html>

@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Circuito en Paralelo</title>
+     <a href="electromagnetismo.html" class="volver">🔙 Regresar al menú de Electromagnetismo</a>
+    <script>
+        function calcularParalelo() {
+            const vt = parseFloat(document.getElementById('vt').value);
+            const r1 = parseFloat(document.getElementById('r1').value);
+            const r2 = parseFloat(document.getElementById('r2').value);
+            const r3Input = document.getElementById('r3').value;
+            const r3 = r3Input ? parseFloat(r3Input) : null;
+
+            if ([vt, r1, r2].some(v => isNaN(v) || v < 0) || (r3Input && (isNaN(r3) || r3 < 0))) {
+                alert("Por favor, ingresa valores positivos válidos.");
+                return;
+            }
+
+            let resultado = "";
+            if (r3 === null) {
+                const rt = 1 / (1 / r1 + 1 / r2);
+                const it = vt / rt;
+                const i1 = vt / r1;
+                const i2 = vt / r2;
+                const p1 = i1 * vt;
+                const p2 = i2 * vt;
+
+                resultado = `
+                    Resistencia Total (RT): ${rt.toFixed(4)} Ω<br>
+                    Corriente Total (IT): ${it.toFixed(4)} A<br>
+                    Corriente 1 (I1): ${i1.toFixed(4)} A<br>
+                    Corriente 2 (I2): ${i2.toFixed(4)} A<br>
+                    Potencia 1 (P1): ${p1.toFixed(4)} W<br>
+                    Potencia 2 (P2): ${p2.toFixed(4)} W<br>
+                    RT = (1/R1 + 1/R2)^-1<br>
+                    I = V / R<br>
+                    P = I * V
+                `;
+            } else {
+                const rt = 1 / (1 / r1 + 1 / r2 + 1 / r3);
+                const it = vt / rt;
+                const i1 = vt / r1;
+                const i2 = vt / r2;
+                const i3 = vt / r3;
+                const p1 = i1 * vt;
+                const p2 = i2 * vt;
+                const p3 = i3 * vt;
+
+                resultado = `
+                    Resistencia Total (RT): ${rt.toFixed(4)} Ω<br>
+                    Corriente Total (IT): ${it.toFixed(4)} A<br>
+                    Corriente 1 (I1): ${i1.toFixed(4)} A<br>
+                    Corriente 2 (I2): ${i2.toFixed(4)} A<br>
+                    Corriente 3 (I3): ${i3.toFixed(4)} A<br>
+                    Potencia 1 (P1): ${p1.toFixed(4)} W<br>
+                    Potencia 2 (P2): ${p2.toFixed(4)} W<br>
+                    Potencia 3 (P3): ${p3.toFixed(4)} W<br>
+                    RT = (1/R1 + 1/R2 + 1/R3)^-1<br>
+                    I = V / R<br>
+                    P = I * V
+                `;
+            }
+
+            document.getElementById('resultado').innerHTML = resultado;
+        }
+
+        function limpiar() {
+            document.getElementById('vt').value = "";
+            document.getElementById('r1').value = "";
+            document.getElementById('r2').value = "";
+            document.getElementById('r3').value = "";
+            document.getElementById('resultado').innerHTML = "";
+        }
+    </script>
+</head>
+<body>
+    <h2>Circuito en Paralelo</h2>
+    <label>Voltaje Total (V): <input type="number" id="vt" step="any"></label><br>
+    <label>Resistencia R1 (Ω): <input type="number" id="r1" step="any"></label><br>
+    <label>Resistencia R2 (Ω): <input type="number" id="r2" step="any"></label><br>
+    <label>Resistencia R3 (Ω) [opcional]: <input type="number" id="r3" step="any"></label><br><br>
+    <button onclick="calcularParalelo()">Calcular</button>
+    <button onclick="limpiar()">Limpiar</button>
+    <p id="resultado" style="white-space: pre-wrap;"></p>
+</body>
+</html>

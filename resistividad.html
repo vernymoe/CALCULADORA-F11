@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resistividad</title>
+
+  <a href="electromagnetismo.html" class="volver">🔙 Regresar al menú de Electromagnetismo</a>
+
+  <script>
+    function calcular() {
+      const r = parseFloat(document.getElementById('r').value);
+      const p = parseFloat(document.getElementById('p').value);
+      const a = parseFloat(document.getElementById('a').value);
+      const l = parseFloat(document.getElementById('l').value);
+      const output = document.getElementById('resultado');
+      const A = a ? a / 1000000 : null;
+
+      // Validaciones
+      if ([r, p, a, l].some(val => val !== undefined && val < 0)) {
+        output.textContent = "Por favor, ingresa valores positivos.";
+        return;
+      }
+
+      const count = [r, p, a, l].filter(val => !isNaN(val)).length;
+      if (count !== 3) {
+        output.textContent = "Por favor, ingresa exactamente tres valores.";
+        return;
+      }
+
+      let result = "";
+      if (isNaN(r)) {
+        result = `A=${A} m²\nR = (ρ * L) / A = ${(p * l) / A} Ω`;
+      } else if (isNaN(p)) {
+        result = `A=${A} m²\nρ = (R * A) / L = ${(r * A) / l} Ω·m`;
+      } else if (isNaN(a)) {
+        const resulta = ((p * l) / r) * 1000000;
+        result = `A = (ρ * L) / R = ${resulta} mm²\nA = ${resulta / 1000000} m²`;
+      } else if (isNaN(l)) {
+        result = `A = ${A} m²\nL = (R * A) / ρ = ${(r * A) / p} m`;
+      }
+
+      output.textContent = result;
+    }
+
+    function limpiar() {
+      document.getElementById('r').value = "";
+      document.getElementById('p').value = "";
+      document.getElementById('a').value = "";
+      document.getElementById('l').value = "";
+      document.getElementById('resultado').textContent = "";
+    }
+  </script>
+</head>
+<body>
+  <h1>Resistividad</h1>
+  <label>Resistencia (Ω): <input id="r" type="number" step="any"></label><br>
+  <label>Resistividad (Ω·m): <input id="p" type="number" step="any"></label><br>
+  <label>Área (mm²): <input id="a" type="number" step="any"></label><br>
+  <label>Longitud (m): <input id="l" type="number" step="any"></label><br><br>
+
+  <button onclick="calcular()">Calcular</button>
+  <button onclick="limpiar()">Limpiar</button>
+  <pre id="resultado"></pre>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Presión - Hidrostática</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Cálculo de Presión</h1>
+
+    <label for="presion">Presión (Pa):</label>
+    <input type="number" id="presion">
+
+    <label for="fuerza">Fuerza (N):</label>
+    <input type="number" id="fuerza">
+
+    <label for="area">Área (m²):</label>
+    <input type="number" id="area">
+
+    <button onclick="calcular()">Calcular</button>
+
+    <div id="resultado"></div>
+
+    <a href="hidrostatica.html">← Volver a Hidrostática</a>
+
+    <script>
+        function calcular() {
+            const p = parseFloat(document.getElementById('presion').value);
+            const f = parseFloat(document.getElementById('fuerza').value);
+            const a = parseFloat(document.getElementById('area').value);
+
+            const pVal = !isNaN(p);
+            const fVal = !isNaN(f);
+            const aVal = !isNaN(a);
+
+            const resultado = document.getElementById('resultado');
+
+            if ([pVal, fVal, aVal].filter(Boolean).length === 2) {
+                if (!pVal && fVal && aVal) {
+                    const presion = f / a;
+                    resultado.innerText = `P = F / A = ${f} / ${a} = ${presion.toFixed(2)} Pa`;
+                } else if (!fVal && pVal && aVal) {
+                    const fuerza = p * a;
+                    resultado.innerText = `F = P * A = ${p} * ${a} = ${fuerza.toFixed(2)} N`;
+                } else if (!aVal && pVal && fVal) {
+                    const area = f / p;
+                    resultado.innerText = `A = F / P = ${f} / ${p} = ${area.toFixed(4)} m²`;
+                }
+            } else {
+                resultado.innerText = "Por favor, ingresa solo dos valores para calcular el tercero.";
+            }
+        }
+    </script>
+
+</body>
+</html>

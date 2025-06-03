@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Transformadores</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input, button, select { margin: 5px; padding: 5px; }
+        .section { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Transformadores</h2>
+    <div class="section">
+        <label><input type="radio" name="modo" value="vueltas" checked> Cálculo de Vueltas</label>
+        <label><input type="radio" name="modo" value="corrientes"> Cálculo de Corrientes</label>
+    </div>
+    <div id="camposVueltas" class="section">
+        <input type="number" id="n1" placeholder="N1 (vueltas)">
+        <input type="number" id="n2" placeholder="N2 (vueltas)">
+        <input type="number" id="v1" placeholder="V1 (voltios)">
+        <input type="number" id="v2" placeholder="V2 (voltios)">
+    </div>
+    <div id="camposCorrientes" class="section" style="display:none;">
+        <input type="number" id="i1" placeholder="I1 (amperios)">
+        <input type="number" id="i2" placeholder="I2 (amperios)">
+        <input type="number" id="v1c" placeholder="V1 (voltios)">
+        <input type="number" id="v2c" placeholder="V2 (voltios)">
+    </div>
+    <div class="section">
+        <button onclick="calcular()">Calcular</button>
+        <button onclick="limpiar()">Limpiar</button>
+    </div>
+    <div id="resultado"></div>
+ <a href="electromagnetismo.html" class="volver">🔙 Regresar al menú de Electromagnetismo</a>
+
+    <script>
+        const modoRadios = document.getElementsByName("modo");
+        const camposVueltas = document.getElementById("camposVueltas");
+        const camposCorrientes = document.getElementById("camposCorrientes");
+
+        modoRadios.forEach(radio => {
+            radio.addEventListener("change", () => {
+                if (radio.value === "vueltas") {
+                    camposVueltas.style.display = "block";
+                    camposCorrientes.style.display = "none";
+                } else {
+                    camposVueltas.style.display = "none";
+                    camposCorrientes.style.display = "block";
+                }
+                limpiar();
+            });
+        });
+
+        function calcular() {
+            const modo = [...modoRadios].find(r => r.checked).value;
+            const r = document.getElementById("resultado");
+            if (modo === "vueltas") {
+                const n1 = parseFloat(document.getElementById("n1").value);
+                const n2 = parseFloat(document.getElementById("n2").value);
+                const v1 = parseFloat(document.getElementById("v1").value);
+                const v2 = parseFloat(document.getElementById("v2").value);
+                const datos = [n1, n2, v1, v2].filter(v => !isNaN(v));
+                if (datos.length !== 3) {
+                    r.innerText = "Por favor, ingresa exactamente tres valores.";
+                    return;
+                }
+                if (isNaN(n1)) r.innerText = `N1 = (V1 / V2) * N2 = ${(v1 / v2) * n2} Vueltas`;
+                else if (isNaN(n2)) r.innerText = `N2 = (V2 / V1) * N1 = ${(v2 / v1) * n1} Vueltas`;
+                else if (isNaN(v1)) r.innerText = `V1 = (N1 / N2) * V2 = ${(n1 / n2) * v2} V`;
+                else if (isNaN(v2)) r.innerText = `V2 = (N2 / N1) * V1 = ${(n2 / n1) * v1} V`;
+            } else {
+                const i1 = parseFloat(document.getElementById("i1").value);
+                const i2 = parseFloat(document.getElementById("i2").value);
+                const v1 = parseFloat(document.getElementById("v1c").value);
+                const v2 = parseFloat(document.getElementById("v2c").value);
+                const datos = [i1, i2, v1, v2].filter(v => !isNaN(v));
+                if (datos.length !== 3) {
+                    r.innerText = "Por favor, ingresa exactamente tres valores.";
+                    return;
+                }
+                if (isNaN(i1)) r.innerText = `I1 = (I2 * V2) / V1 = ${(i2 * v2) / v1} A`;
+                else if (isNaN(i2)) r.innerText = `I2 = (I1 * V1) / V2 = ${(i1 * v1) / v2} A`;
+                else if (isNaN(v1)) r.innerText = `V1 = (I2 * V2) / I1 = ${(i2 * v2) / i1} V`;
+                else if (isNaN(v2)) r.innerText = `V2 = (I1 * V1) / I2 = ${(i1 * v1) / i2} V`;
+            }
+        }
+
+        function limpiar() {
+            document.querySelectorAll("input").forEach(input => input.value = "");
+            document.getElementById("resultado").innerText = "";
+        }
+    </script>
+</body>
+</html>

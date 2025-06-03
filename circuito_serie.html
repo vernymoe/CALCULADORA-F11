@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Circuito en Serie</title>
+     <a href="electromagnetismo.html" class="volver">🔙 Regresar al menú de Electromagnetismo</a>
+
+    <script>
+        function calcular() {
+            const vt = parseFloat(document.getElementById('vt').value);
+            const r1 = parseFloat(document.getElementById('r1').value);
+            const r2 = parseFloat(document.getElementById('r2').value);
+            const r3Input = document.getElementById('r3').value;
+            const r3 = r3Input ? parseFloat(r3Input) : null;
+
+            if ([vt, r1, r2].some(val => isNaN(val) || val < 0) || (r3Input && r3 < 0)) {
+                alert("Por favor, ingresa valores positivos.");
+                return;
+            }
+
+            let resultado = "";
+            if (!isNaN(vt) && !isNaN(r1) && !isNaN(r2) && r3Input === "") {
+                const rt = r1 + r2;
+                const i = vt / rt;
+                const v1 = i * r1;
+                const v2 = i * r2;
+                const p1 = i * v1;
+                const p2 = i * v2;
+                resultado = `Resistencia Total (RT): ${rt.toFixed(4)} Ω<br>
+                            Corriente Total (I): ${i.toFixed(4)} A<br>
+                            Voltaje 1 (V1): ${v1.toFixed(4)} V<br>
+                            Voltaje 2 (V2): ${v2.toFixed(4)} V<br>
+                            Potencia 1 (P1): ${p1.toFixed(4)} W<br>
+                            Potencia 2 (P2): ${p2.toFixed(4)} W<br><br>
+                            RT = R1 + R2<br>
+                            I = V / R<br>
+                            V = I * R<br>
+                            P = I * V`;
+            } else if (!isNaN(vt) && !isNaN(r1) && !isNaN(r2) && !isNaN(r3)) {
+                const rt = r1 + r2 + r3;
+                const i = vt / rt;
+                const v1 = i * r1;
+                const v2 = i * r2;
+                const v3 = i * r3;
+                const p1 = i * v1;
+                const p2 = i * v2;
+                const p3 = i * v3;
+                resultado = `Resistencia Total (RT): ${rt.toFixed(4)} Ω<br>
+                            Corriente Total (I): ${i.toFixed(4)} A<br>
+                            Voltaje 1 (V1): ${v1.toFixed(4)} V<br>
+                            Voltaje 2 (V2): ${v2.toFixed(4)} V<br>
+                            Voltaje 3 (V3): ${v3.toFixed(4)} V<br>
+                            Potencia 1 (P1): ${p1.toFixed(4)} W<br>
+                            Potencia 2 (P2): ${p2.toFixed(4)} W<br>
+                            Potencia 3 (P3): ${p3.toFixed(4)} W<br><br>
+                            RT = R1 + R2 + R3<br>
+                            I = V / R<br>
+                            V = I * R<br>
+                            P = I * V`;
+            } else {
+                alert("Por favor, ingresa al menos VT, R1 y R2.");
+                return;
+            }
+
+            document.getElementById('resultado').innerHTML = resultado;
+        }
+
+        function limpiar() {
+            document.getElementById('vt').value = "";
+            document.getElementById('r1').value = "";
+            document.getElementById('r2').value = "";
+            document.getElementById('r3').value = "";
+            document.getElementById('resultado').innerHTML = "";
+        }
+    </script>
+</head>
+<body>
+    <h2>Circuito en Serie</h2>
+    <label>Voltaje Total (VT): <input type="number" id="vt" step="any"></label><br>
+    <label>Resistencia R1: <input type="number" id="r1" step="any"></label><br>
+    <label>Resistencia R2: <input type="number" id="r2" step="any"></label><br>
+    <label>Resistencia R3 (opcional): <input type="number" id="r3" step="any"></label><br><br>
+    <button onclick="calcular()">Calcular</button>
+    <button onclick="limpiar()">Limpiar</button>
+    <p id="resultado"></p>
+</body>
+</html>

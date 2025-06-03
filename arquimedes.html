@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Principio de Arquímedes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e8f8f5;
+            padding: 20px;
+            max-width: 750px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        label, input, select {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #calcularButton {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        #limpiarButton {
+            background-color: #6c757d;
+            color: white;
+            margin-left: 10px;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            white-space: pre-line;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Principio de Arquímedes</h1>
+
+    <label>Escenario:</label>
+    <input type="radio" name="escenario" id="radioFlota" onclick="ajustarCampos()"> Flota
+    <input type="radio" name="escenario" id="radioSeHunde" onclick="ajustarCampos()"> Se hunde
+
+    <label for="fe">Fuerza de Empuje (N):</label>
+    <input type="number" id="fe">
+
+    <label for="m">Masa (kg):</label>
+    <input type="number" id="m">
+
+    <label for="dl">Densidad del líquido (kg/m³):</label>
+    <input type="number" id="dl">
+
+    <label for="vs">Volumen sumergido (m³):</label>
+    <input type="number" id="vs">
+
+    <label for="vo">Volumen del objeto (m³):</label>
+    <input type="number" id="vo">
+
+    <button id="calcularButton" onclick="calcularArquimedes()">Calcular</button>
+    <button id="limpiarButton" onclick="limpiarCampos()">Limpiar</button>
+
+    <div id="resultado"></div>
+
+    <a href="hidrostatica.html">← Volver a Hidrostática</a>
+
+    <script>
+        const g = 9.8;
+
+        function ajustarCampos() {
+            const flota = document.getElementById("radioFlota").checked;
+
+            document.getElementById("m").disabled = false;
+            document.getElementById("dl").disabled = false;
+            document.getElementById("fe").disabled = false;
+            document.getElementById("vs").disabled = false;
+            document.getElementById("vo").disabled = false;
+
+            if (flota) {
+                document.getElementById("vo").disabled = true;
+            } else {
+                document.getElementById("m").disabled = true;
+                document.getElementById("vs").disabled = true;
+            }
+
+            document.getElementById("resultado").innerText = "";
+        }
+
+        function calcularArquimedes() {
+            const fe = parseFloat(document.getElementById('fe').value);
+            const m = parseFloat(document.getElementById('m').value);
+            const dl = parseFloat(document.getElementById('dl').value);
+            const vs = parseFloat(document.getElementById('vs').value);
+            const vo = parseFloat(document.getElementById('vo').value);
+            const res = document.getElementById('resultado');
+            const flota = document.getElementById("radioFlota").checked;
+            res.style.color = "#333";
+
+            function round(val, dec) {
+                return Number.parseFloat(val).toFixed(dec);
+            }
+
+            if (flota) {
+                if (isNaN(fe) && !isNaN(m) && !isNaN(dl)) {
+                    const feCalc = m * g;
+                    const vsCalc = feCalc / (dl * g);
+                    res.innerText = `FE = ${round(feCalc, 4)} N\nVs = ${round(vsCalc, 7)} m³\nFE = m·g\nVs = FE / (Dl·g)`;
+                } else if (isNaN(fe) && !isNaN(m) && !isNaN(vs)) {
+                    const feCalc = m * g;
+                    const dlCalc = feCalc / (vs * g);
+                    res.innerText = `FE = ${round(feCalc, 4)} N\nDl = ${round(dlCalc, 2)} kg/m³\nFE = m·g\nDl = FE / (Vs·g)`;
+                } else if (!isNaN(vs) && !isNaN(dl)) {
+                    const feCalc = dl * g * vs;
+                    const mCalc = feCalc / g;
+                    res.innerText = `FE = ${round(feCalc, 4)} N\nm = ${round(mCalc, 4)} kg\nFE = Dl·Vs·g\nm = FE / g`;
+                } else if (isNaN(m) && !isNaN(fe) && !isNaN(dl)) {
+                    const mCalc = fe / g;
+                    const vsCalc = fe / (dl * g);
+                    res.innerText = `m = ${round(mCalc, 4)} kg\nVs = ${round(vsCalc, 7)} m³\nm = FE / g\nVs = FE / (Dl·g)`;
+                } else if (isNaN(m) && !isNaN(fe) && !isNaN(vs)) {
+                    const mCalc = fe / g;
+                    const dlCalc = fe / (vs * g);
+                    res.innerText = `m = ${round(mCalc, 4)} kg\nDl = ${round(dlCalc, 2)} kg/m³\nm = FE / g\nDl = FE / (Vs·g)`;
+                } else {
+                    res.innerText = "Por favor, completa los valores requeridos para el escenario 'Flota'.";
+                }
+            } else {
+                if (isNaN(fe) && !isNaN(dl) && !isNaN(vo)) {
+                    const feCalc = dl * g * vo;
+                    res.innerText = `FE = ${round(feCalc, 4)} N\nFE = Dl·Vo·g`;
+                } else if (isNaN(dl) && !isNaN(fe) && !isNaN(vo)) {
+                    const dlCalc = fe / (vo * g);
+                    res.innerText = `Dl = ${round(dlCalc, 2)} kg/m³\nDl = FE / (Vo·g)`;
+                } else if (isNaN(vo) && !isNaN(fe) && !isNaN(dl)) {
+                    const voCalc = fe / (dl * g);
+                    res.innerText = `Vo = ${round(voCalc, 7)} m³\nVo = FE / (Dl·g)`;
+                } else {
+                    res.innerText = "Por favor, completa los valores requeridos para el escenario 'Se hunde'.";
+                }
+            }
+        }
+
+        function limpiarCampos() {
+            ['fe', 'm', 'dl', 'vs', 'vo'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('resultado').innerText = '';
+        }
+    </script>
+
+</body>
+</html>

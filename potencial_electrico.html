@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Diferencia de Potencial Eléctrico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9faff;
+            padding: 20px;
+            max-width: 750px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #calcularButton {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        #limpiarButton {
+            background-color: #6c757d;
+            color: white;
+            margin-left: 10px;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            white-space: pre-line;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Diferencia de Potencial Eléctrico</h1>
+
+    <label for="q1">Carga Q₁ (C):</label>
+    <input type="number" id="q1" step="any">
+
+    <label for="r1">Distancia r₁ (m):</label>
+    <input type="number" id="r1" step="any">
+
+    <label for="q2">Carga Q₂ (C):</label>
+    <input type="number" id="q2" step="any">
+
+    <label for="r2">Distancia r₂ (m):</label>
+    <input type="number" id="r2" step="any">
+
+    <label for="q3">Carga Q₃ (C):</label>
+    <input type="number" id="q3" step="any">
+
+    <label for="r3">Distancia r₃ (m):</label>
+    <input type="number" id="r3" step="any">
+
+    <button id="calcularButton" onclick="calcularPotencial()">Calcular</button>
+    <button id="limpiarButton" onclick="limpiar()">Limpiar</button>
+
+    <div id="resultado"></div>
+
+    <a href="electrostatica.html">← Volver a Electrostática</a>
+
+    <script>
+        function calcularPotencial() {
+            const k = 9e9;
+
+            const q1 = parseFloat(document.getElementById("q1").value);
+            const q2 = parseFloat(document.getElementById("q2").value);
+            const q3 = parseFloat(document.getElementById("q3").value);
+            const r1 = parseFloat(document.getElementById("r1").value);
+            const r2 = parseFloat(document.getElementById("r2").value);
+            const r3 = parseFloat(document.getElementById("r3").value);
+
+            const res = document.getElementById("resultado");
+
+            if ([r1, r2, r3].some(r => r != null && r < 0)) {
+                res.innerText = "Por favor, ingresa valores positivos para los radios.";
+                return;
+            }
+
+            if ([q1, q2, q3].every(q => isNaN(q)) || [r1, r2, r3].every(r => isNaN(r))) {
+                res.innerText = "Por favor, ingresa al menos una carga y su respectiva distancia.";
+                return;
+            }
+
+            let v = 0;
+
+            if (!isNaN(q1) && !isNaN(r1)) v += k * (q1 / r1);
+            if (!isNaN(q2) && !isNaN(r2)) v += k * (q2 / r2);
+            if (!isNaN(q3) && !isNaN(r3)) v += k * (q3 / r3);
+
+            res.innerText = `V = ${v.toExponential(3)} V\n\nV = k · Σ(Q / r)`;
+        }
+
+        function limpiar() {
+            ["q1", "q2", "q3", "r1", "r2", "r3"].forEach(id => document.getElementById(id).value = '');
+            document.getElementById("resultado").innerText = '';
+        }
+    </script>
+
+</body>
+</html>

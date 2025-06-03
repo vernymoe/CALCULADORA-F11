@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ley de Ohm</title>
+    <a href="electromagnetismo.html" class="volver">🔙 Regresar al menú de Electromagnetismo</a>
+
+    <script>
+        function calcular() {
+            const i = parseFloat(document.getElementById('i').value);
+            const v = parseFloat(document.getElementById('v').value);
+            const r = parseFloat(document.getElementById('r').value);
+
+            let count = [!isNaN(i), !isNaN(v), !isNaN(r)].filter(Boolean).length;
+
+            if (count !== 2) {
+                document.getElementById('resultado').innerText = "Por favor, ingresa exactamente dos valores.";
+                return;
+            }
+
+            if ([i, v, r].some(x => !isNaN(x) && x < 0)) {
+                document.getElementById('resultado').innerText = "Por favor, ingresa valores positivos.";
+                return;
+            }
+
+            let resultado = "";
+
+            if (isNaN(i) && !isNaN(v) && !isNaN(r)) {
+                const iCalculado = v / r;
+                resultado = `I = V / R = ${v} / ${r} = ${iCalculado.toFixed(4)} A`;
+            } else if (isNaN(v) && !isNaN(i) && !isNaN(r)) {
+                const vCalculado = i * r;
+                resultado = `V = I * R = ${i} * ${r} = ${vCalculado.toFixed(4)} V`;
+            } else if (isNaN(r) && !isNaN(i) && !isNaN(v)) {
+                const rCalculado = v / i;
+                resultado = `R = V / I = ${v} / ${i} = ${rCalculado.toFixed(4)} Ω`;
+            }
+
+            document.getElementById('resultado').innerText = resultado;
+        }
+
+        function limpiar() {
+            document.getElementById('i').value = '';
+            document.getElementById('v').value = '';
+            document.getElementById('r').value = '';
+            document.getElementById('resultado').innerText = '';
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Ley de Ohm</h1>
+    <label>Corriente (I) en A:</label>
+    <input type="number" id="i" step="any"><br><br>
+    <label>Voltaje (V) en V:</label>
+    <input type="number" id="v" step="any"><br><br>
+    <label>Resistencia (R) en Ω:</label>
+    <input type="number" id="r" step="any"><br><br>
+    <button onclick="calcular()">Calcular</button>
+    <button onclick="limpiar()">Limpiar</button>
+    <p id="resultado"></p>
+</body>
+</html>

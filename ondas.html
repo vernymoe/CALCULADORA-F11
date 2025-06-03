@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ondas</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h1 { color: #333; }
+        input, button { margin: 5px 0; padding: 8px; width: 100%; }
+        .resultado { margin-top: 15px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Ondas</h1>
+
+    <label for="v">Velocidad v (m/s):</label>
+    <input type="number" id="v" step="any">
+
+    <label for="t">Período T (s):</label>
+    <input type="number" id="t" step="any">
+
+    <label for="f">Frecuencia f (Hz):</label>
+    <input type="number" id="f" step="any">
+
+    <label for="lambda">Longitud de onda λ (m):</label>
+    <input type="number" id="lambda" step="any">
+
+    <button onclick="calcular()">Calcular</button>
+    <button onclick="limpiar()">Limpiar</button>
+
+    <div class="resultado" id="resultado"></div>
+
+    <script>
+        function calcular() {
+            const v = parseFloat(document.getElementById('v').value);
+            const t = parseFloat(document.getElementById('t').value);
+            const f = parseFloat(document.getElementById('f').value);
+            const lambda = parseFloat(document.getElementById('lambda').value);
+            const resultado = document.getElementById('resultado');
+
+            if ([v, t, f, lambda].filter(val => !isNaN(val) && val < 0).length > 0) {
+                resultado.innerText = "Por favor, ingresa valores positivos.";
+                return;
+            }
+
+            const entradas = [!isNaN(v), !isNaN(t), !isNaN(f), !isNaN(lambda)].filter(Boolean).length;
+            if (entradas !== 2) {
+                resultado.innerText = "Por favor, ingresa exactamente dos valores.";
+                return;
+            }
+
+            if (!isNaN(t) && !isNaN(f)) {
+                resultado.innerText = "No puedes ingresar T y f al mismo tiempo.";
+                return;
+            }
+
+            let texto = "";
+            if (!isNaN(lambda) && !isNaN(t)) {
+                const vCalc = lambda / t;
+                const fCalc = 1 / t;
+                texto = `v = λ / T = ${lambda} / ${t} = ${vCalc} m/s\nf = 1 / T = 1 / ${t} = ${fCalc} Hz`;
+            } else if (!isNaN(lambda) && !isNaN(f)) {
+                const vCalc = lambda * f;
+                const tCalc = 1 / f;
+                texto = `v = λ * f = ${lambda} * ${f} = ${vCalc} m/s\nT = 1 / f = 1 / ${f} = ${tCalc} s`;
+            } else if (!isNaN(v) && !isNaN(t)) {
+                const lambdaCalc = v * t;
+                const fCalc = 1 / t;
+                texto = `λ = v * T = ${v} * ${t} = ${lambdaCalc} m\nf = 1 / T = 1 / ${t} = ${fCalc} Hz`;
+            } else if (!isNaN(v) && !isNaN(f)) {
+                const lambdaCalc = v / f;
+                const tCalc = 1 / f;
+                texto = `λ = v / f = ${v} / ${f} = ${lambdaCalc} m\nT = 1 / f = 1 / ${f} = ${tCalc} s`;
+            } else if (!isNaN(v) && !isNaN(lambda)) {
+                const tCalc = lambda / v;
+                const fCalc = 1 / tCalc;
+                texto = `T = λ / v = ${lambda} / ${v} = ${tCalc} s\nf = 1 / T = 1 / ${tCalc} = ${fCalc} Hz`;
+            } else {
+                texto = "Error inesperado. Verifica los datos.";
+            }
+
+            resultado.innerText = texto;
+        }
+
+        function limpiar() {
+            document.getElementById('v').value = "";
+            document.getElementById('t').value = "";
+            document.getElementById('f').value = "";
+            document.getElementById('lambda').value = "";
+            document.getElementById('resultado').innerText = "";
+        }
+    </script>
+    ...
+<div class="resultado" id="resultado"></div>
+
+<a href="index.html" style="display:inline-block; margin-top: 20px; text-decoration:none; color:blue;">🔙 Regresar al menú principal</a>
+
+<script>
+    // tu código JS aquí
+</script>
+</body>
+</html>
+

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Fuerza Eléctrica - Ley de Coulomb</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f9ff;
+            padding: 20px;
+            max-width: 750px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #calcularButton {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        #limpiarButton {
+            background-color: #6c757d;
+            color: white;
+            margin-left: 10px;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            white-space: pre-line;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Ley de Coulomb - Fuerza Eléctrica</h1>
+
+    <label for="q1">Carga Q₁ (C):</label>
+    <input type="number" id="q1" step="any">
+
+    <label for="q2">Carga Q₂ (C):</label>
+    <input type="number" id="q2" step="any">
+
+    <label for="r">Distancia r (m):</label>
+    <input type="number" id="r" step="any">
+
+    <label for="f">Fuerza F (N):</label>
+    <input type="number" id="f" step="any">
+
+    <button id="calcularButton" onclick="calcularCoulomb()">Calcular</button>
+    <button id="limpiarButton" onclick="limpiar()">Limpiar</button>
+
+    <div id="resultado"></div>
+
+    <a href="electrostatica.html">← Volver a Electrostática</a>
+
+    <script>
+        function calcularCoulomb() {
+            const k = 9e9;
+            const q1 = parseFloat(document.getElementById("q1").value);
+            const q2 = parseFloat(document.getElementById("q2").value);
+            const r = parseFloat(document.getElementById("r").value);
+            const f = parseFloat(document.getElementById("f").value);
+            const res = document.getElementById("resultado");
+
+            if ([q1, q2, r, f].some(val => val != null && val < 0)) {
+                res.innerText = "Por favor, ingresa valores positivos.";
+                return;
+            }
+
+            const entradas = [!isNaN(q1), !isNaN(q2), !isNaN(r), !isNaN(f)].filter(Boolean).length;
+            if (entradas !== 3) {
+                res.innerText = "Por favor, ingresa exactamente tres valores.";
+                return;
+            }
+
+            if (!isNaN(q1) && !isNaN(q2) && !isNaN(r)) {
+                const fCalc = (k * q1 * q2) / (r * r);
+                res.innerText = `F = (k·Q₁·Q₂) / r² = (${k}·${q1}·${q2}) / ${r}² = ${fCalc.toExponential(3)} N`;
+            } else if (!isNaN(q1) && !isNaN(q2) && !isNaN(f)) {
+                const rCalc = Math.sqrt((k * q1 * q2) / f);
+                res.innerText = `r = √[(k·Q₁·Q₂)/F] = √[(${k}·${q1}·${q2}) / ${f}] = ${rCalc.toExponential(3)} m`;
+            } else if (!isNaN(q2) && !isNaN(r) && !isNaN(f)) {
+                const q1Calc = (f * r * r) / (k * q2);
+                res.innerText = `Q₁ = (F·r²) / (k·Q₂) = (${f}·${r}²) / (${k}·${q2}) = ${q1Calc.toExponential(3)} C`;
+            } else if (!isNaN(q1) && !isNaN(r) && !isNaN(f)) {
+                const q2Calc = (f * r * r) / (k * q1);
+                res.innerText = `Q₂ = (F·r²) / (k·Q₁) = (${f}·${r}²) / (${k}·${q1}) = ${q2Calc.toExponential(3)} C`;
+            } else {
+                res.innerText = "Error inesperado. Verifica los datos.";
+            }
+        }
+
+        function limpiar() {
+            document.getElementById("q1").value = '';
+            document.getElementById("q2").value = '';
+            document.getElementById("r").value = '';
+            document.getElementById("f").value = '';
+            document.getElementById("resultado").innerText = '';
+        }
+    </script>
+
+</body>
+</html>

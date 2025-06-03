@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Corriente Eléctrica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            padding: 40px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        label, input {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        input {
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #2c3e50;
+            background-color: #e6f7ff;
+            padding: 15px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Corriente Eléctrica</h1>
+
+    <label for="i">Corriente (I) en Amperios [A]</label>
+    <input type="number" id="i" step="any">
+
+    <label for="q">Carga (Q) en Coulombs [C]</label>
+    <input type="number" id="q" step="any">
+
+    <label for="t">Tiempo (t) en segundos [s]</label>
+    <input type="number" id="t" step="any">
+
+    <button onclick="calcular()">Calcular</button>
+    <button onclick="limpiar()">Limpiar</button>
+
+    <div id="resultado"></div>
+    <a href="electromagnetismo.html" class="volver">🔙 Regresar al menú de Electromagnetismo</a>
+
+    <script>
+        function calcular() {
+            const i = parseFloat(document.getElementById("i").value);
+            const q = parseFloat(document.getElementById("q").value);
+            const t = parseFloat(document.getElementById("t").value);
+
+            let cantidad = [i, q, t].filter(v => !isNaN(v)).length;
+            if (cantidad !== 2) {
+                document.getElementById("resultado").innerText = "Por favor, ingresa exactamente dos valores para calcular el tercero.";
+                return;
+            }
+
+            let resultado = "";
+            if (!isNaN(q) && !isNaN(t)) {
+                resultado = `I = Q / t = ${q} / ${t} = ${q / t} A`;
+            } else if (!isNaN(i) && !isNaN(t)) {
+                resultado = `Q = I * t = ${i} * ${t} = ${i * t} C`;
+            } else if (!isNaN(i) && !isNaN(q)) {
+                resultado = `t = Q / I = ${q} / ${i} = ${q / i} s`;
+            }
+            document.getElementById("resultado").innerText = resultado;
+        }
+
+        function limpiar() {
+            document.getElementById("i").value = "";
+            document.getElementById("q").value = "";
+            document.getElementById("t").value = "";
+            document.getElementById("resultado").innerText = "";
+        }
+    </script>
+</body>
+</html>

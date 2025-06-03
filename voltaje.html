@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Voltaje - Electrostática</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8fcff;
+            padding: 20px;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #calcularButton {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        #limpiarButton {
+            background-color: #6c757d;
+            color: white;
+            margin-left: 10px;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            white-space: pre-line;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Cálculo de Voltaje</h1>
+
+    <label for="v">Voltaje V (V):</label>
+    <input type="number" id="v" step="any">
+
+    <label for="e">Campo eléctrico E (V/m):</label>
+    <input type="number" id="e" step="any">
+
+    <label for="d">Distancia d (m):</label>
+    <input type="number" id="d" step="any">
+
+    <button id="calcularButton" onclick="calcularVoltaje()">Calcular</button>
+    <button id="limpiarButton" onclick="limpiar()">Limpiar</button>
+
+    <div id="resultado"></div>
+
+    <a href="electrostatica.html">← Volver a Electrostática</a>
+
+    <script>
+        function calcularVoltaje() {
+            const v = parseFloat(document.getElementById("v").value);
+            const e = parseFloat(document.getElementById("e").value);
+            const d = parseFloat(document.getElementById("d").value);
+            const res = document.getElementById("resultado");
+
+            if ([v, e, d].some(x => x != null && x < 0)) {
+                res.innerText = "Por favor, ingresa valores positivos.";
+                return;
+            }
+
+            const cantidad = [!isNaN(v), !isNaN(e), !isNaN(d)].filter(Boolean).length;
+            if (cantidad !== 2) {
+                res.innerText = "Por favor, ingresa exactamente dos valores.";
+                return;
+            }
+
+            if (!isNaN(e) && !isNaN(d)) {
+                const vCalc = e * d;
+                res.innerText = `V = E · d = ${e} · ${d} = ${vCalc.toFixed(2)} V`;
+            } else if (!isNaN(v) && !isNaN(d)) {
+                const eCalc = v / d;
+                res.innerText = `E = V / d = ${v} / ${d} = ${eCalc.toFixed(2)} V/m`;
+            } else if (!isNaN(v) && !isNaN(e)) {
+                const dCalc = v / e;
+                res.innerText = `d = V / E = ${v} / ${e} = ${dCalc.toFixed(4)} m`;
+            } else {
+                res.innerText = "Error inesperado. Verifica los datos.";
+            }
+        }
+
+        function limpiar() {
+            document.getElementById("v").value = '';
+            document.getElementById("e").value = '';
+            document.getElementById("d").value = '';
+            document.getElementById("resultado").innerText = '';
+        }
+    </script>
+
+</body>
+</html>

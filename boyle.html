@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ley de Boyle - Hidrostática</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            padding: 20px;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #calcularButton {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        #limpiarButton {
+            background-color: #6c757d;
+            color: white;
+            margin-left: 10px;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Ley de Boyle</h1>
+
+    <label for="p1">Presión 1 (Pa):</label>
+    <input type="number" id="p1">
+
+    <label for="p2">Presión 2 (Pa):</label>
+    <input type="number" id="p2">
+
+    <label for="v1">Volumen 1 (m³):</label>
+    <input type="number" id="v1">
+
+    <label for="v2">Volumen 2 (m³):</label>
+    <input type="number" id="v2">
+
+    <button id="calcularButton" onclick="calcularBoyle()">Calcular</button>
+    <button id="limpiarButton" onclick="limpiarCampos()">Limpiar</button>
+
+    <div id="resultado"></div>
+
+    <a href="hidrostatica.html">← Volver a Hidrostática</a>
+
+    <script>
+        function calcularBoyle() {
+            const p1 = parseFloat(document.getElementById('p1').value);
+            const p2 = parseFloat(document.getElementById('p2').value);
+            const v1 = parseFloat(document.getElementById('v1').value);
+            const v2 = parseFloat(document.getElementById('v2').value);
+
+            const p1Val = !isNaN(p1);
+            const p2Val = !isNaN(p2);
+            const v1Val = !isNaN(v1);
+            const v2Val = !isNaN(v2);
+
+            const resultado = document.getElementById('resultado');
+
+            if ([p1, p2, v1, v2].some(x => x != null && x < 0)) {
+                resultado.innerText = "Por favor, ingresa valores positivos.";
+                return;
+            }
+
+            if ([p1Val, p2Val, v1Val, v2Val].filter(Boolean).length !== 3) {
+                resultado.innerText = "Por favor, ingresa exactamente tres valores.";
+                return;
+            }
+
+            if (!p1Val && p2Val && v1Val && v2Val) {
+                const res = (p2 * v2) / v1;
+                resultado.innerText = `P₁ = (P₂ × V₂) / V₁ = (${p2} × ${v2}) / ${v1} = ${res.toFixed(2)} Pa`;
+            } else if (!p2Val && p1Val && v1Val && v2Val) {
+                const res = (p1 * v1) / v2;
+                resultado.innerText = `P₂ = (P₁ × V₁) / V₂ = (${p1} × ${v1}) / ${v2} = ${res.toFixed(2)} Pa`;
+            } else if (!v1Val && p1Val && p2Val && v2Val) {
+                const res = (p2 * v2) / p1;
+                resultado.innerText = `V₁ = (P₂ × V₂) / P₁ = (${p2} × ${v2}) / ${p1} = ${res.toFixed(4)} m³`;
+            } else if (!v2Val && p1Val && p2Val && v1Val) {
+                const res = (p1 * v1) / p2;
+                resultado.innerText = `V₂ = (P₁ × V₁) / P₂ = (${p1} × ${v1}) / ${p2} = ${res.toFixed(4)} m³`;
+            }
+        }
+
+        function limpiarCampos() {
+            document.getElementById('p1').value = '';
+            document.getElementById('p2').value = '';
+            document.getElementById('v1').value = '';
+            document.getElementById('v2').value = '';
+            document.getElementById('resultado').innerText = '';
+        }
+    </script>
+
+</body>
+</html>

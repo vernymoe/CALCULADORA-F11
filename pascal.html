@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ley de Pascal - Hidrostática</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f7fc;
+            padding: 20px;
+            max-width: 650px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #calcularButton {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        #limpiarButton {
+            background-color: #6c757d;
+            color: white;
+            margin-left: 10px;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .mensaje {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Ley de Pascal</h1>
+
+    <label for="f1">Fuerza 1 (N):</label>
+    <input type="number" id="f1">
+
+    <label for="f2">Fuerza 2 (N):</label>
+    <input type="number" id="f2">
+
+    <label for="a1">Área 1 (cm²):</label>
+    <input type="number" id="a1">
+
+    <label for="a2">Área 2 (cm²):</label>
+    <input type="number" id="a2">
+
+    <button id="calcularButton" onclick="calcularPascal()">Calcular</button>
+    <button id="limpiarButton" onclick="limpiarCampos()">Limpiar</button>
+
+    <div id="resultado"></div>
+
+    <a href="hidrostatica.html">← Volver a Hidrostática</a>
+
+    <script>
+        function calcularPascal() {
+            const f1 = parseFloat(document.getElementById('f1').value);
+            const f2 = parseFloat(document.getElementById('f2').value);
+            const a1 = parseFloat(document.getElementById('a1').value);
+            const a2 = parseFloat(document.getElementById('a2').value);
+
+            const f1Val = !isNaN(f1);
+            const f2Val = !isNaN(f2);
+            const a1Val = !isNaN(a1);
+            const a2Val = !isNaN(a2);
+
+            const resultado = document.getElementById('resultado');
+
+            if ([f1, f2, a1, a2].some(v => v != null && v < 0)) {
+                resultado.innerText = "Por favor, ingresa valores positivos.";
+                resultado.style.color = "red";
+                return;
+            }
+
+            resultado.style.color = "#333";
+
+            if (!f1Val && f2Val && a1Val && a2Val) {
+                const res = (f2 / a2) * a1;
+                resultado.innerText = `F1 = (F2 / A2) * A1 = (${f2} / ${a2}) * ${a1} = ${res.toFixed(2)} N`;
+            } else if (!f2Val && f1Val && a1Val && a2Val) {
+                const res = (f1 / a1) * a2;
+                resultado.innerText = `F2 = (F1 / A1) * A2 = (${f1} / ${a1}) * ${a2} = ${res.toFixed(2)} N`;
+            } else if (!a1Val && f1Val && f2Val && a2Val) {
+                const res = (f1 / f2) * a2;
+                resultado.innerText = `A1 = (F1 / F2) * A2 = (${f1} / ${f2}) * ${a2} = ${res.toFixed(2)} cm²`;
+            } else if (!a2Val && f1Val && f2Val && a1Val) {
+                const res = (f2 / f1) * a1;
+                resultado.innerText = `A2 = (F2 / F1) * A1 = (${f2} / ${f1}) * ${a1} = ${res.toFixed(2)} cm²`;
+            } else {
+                resultado.innerText = "Por favor, ingresa exactamente tres valores para calcular el cuarto.";
+            }
+        }
+
+        function limpiarCampos() {
+            document.getElementById('f1').value = '';
+            document.getElementById('f2').value = '';
+            document.getElementById('a1').value = '';
+            document.getElementById('a2').value = '';
+            document.getElementById('resultado').innerText = '';
+        }
+    </script>
+
+</body>
+</html>

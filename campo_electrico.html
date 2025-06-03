@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Campo Eléctrico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3faff;
+            padding: 20px;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #calcularButton {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        #limpiarButton {
+            background-color: #6c757d;
+            color: white;
+            margin-left: 10px;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            white-space: pre-line;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Cálculo del Campo Eléctrico</h1>
+
+    <label for="q">Carga Q (C):</label>
+    <input type="number" id="q" step="any">
+
+    <label for="r">Distancia r (m):</label>
+    <input type="number" id="r" step="any">
+
+    <label for="e">Campo E (N/C):</label>
+    <input type="number" id="e" step="any">
+
+    <button id="calcularButton" onclick="calcularCampo()">Calcular</button>
+    <button id="limpiarButton" onclick="limpiar()">Limpiar</button>
+
+    <div id="resultado"></div>
+
+    <a href="electrostatica.html">← Volver a Electrostática</a>
+
+    <script>
+        function calcularCampo() {
+            const k = 9e9;
+            const q = parseFloat(document.getElementById("q").value);
+            const r = parseFloat(document.getElementById("r").value);
+            const e = parseFloat(document.getElementById("e").value);
+            const res = document.getElementById("resultado");
+
+            if ([q, r, e].some(v => v != null && v < 0)) {
+                res.innerText = "Por favor, ingresa valores positivos.";
+                return;
+            }
+
+            const entradas = [!isNaN(q), !isNaN(r), !isNaN(e)].filter(Boolean).length;
+            if (entradas !== 2) {
+                res.innerText = "Por favor, ingresa exactamente dos valores.";
+                return;
+            }
+
+            if (!isNaN(q) && !isNaN(r)) {
+                const eCalc = (k * q) / (r * r);
+                res.innerText = `E = (k·Q) / r² = (${k}·${q}) / ${r}² = ${eCalc.toExponential(3)} N/C`;
+            } else if (!isNaN(q) && !isNaN(e)) {
+                const rCalc = Math.sqrt((k * q) / e);
+                res.innerText = `r = √[(k·Q) / E] = √[(${k}·${q}) / ${e}] = ${rCalc.toExponential(3)} m`;
+            } else if (!isNaN(r) && !isNaN(e)) {
+                const qCalc = (e * r * r) / k;
+                res.innerText = `Q = (E·r²) / k = (${e}·${r}²) / ${k} = ${qCalc.toExponential(3)} C`;
+            } else {
+                res.innerText = "Error inesperado. Verifica los datos.";
+            }
+        }
+
+        function limpiar() {
+            document.getElementById("q").value = '';
+            document.getElementById("r").value = '';
+            document.getElementById("e").value = '';
+            document.getElementById("resultado").innerText = '';
+        }
+    </script>
+
+</body>
+</html>
