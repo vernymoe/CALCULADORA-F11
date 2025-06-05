@@ -13,38 +13,64 @@
 
         h1 {
             color: #333;
+            margin-bottom: 30px;
         }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto 40px auto;
         }
 
-        li {
-            margin: 10px 0;
-        }
-
-        a {
-            text-decoration: none;
-            color: #007BFF;
-            font-size: 18px;
-        }
-
-        .boton {
-            display: inline-block;
-            margin: 15px 10px;
-            padding: 10px 20px;
+        .menu-grid a {
             background-color: #007BFF;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu-grid a:hover {
+            background-color: #0056b3;
+        }
+
+        .botones-adicionales {
+            margin: 30px 0;
+        }
+
+        .botones-adicionales a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #28a745;
             color: white;
             border: none;
             border-radius: 8px;
             font-size: 16px;
-            cursor: pointer;
             text-decoration: none;
         }
 
-        .boton:hover {
-            background-color: #0056b3;
+        .botones-adicionales a:hover {
+            background-color: #1e7e34;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .footer a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -52,17 +78,25 @@
 
     <h1>Calculadora Física 11</h1>
 
-    <ul>
-        <li><a href="hidrostatica.html">Hidrostática</a></li>
-        <li><a href="electrostatica.html">Electrostática</a></li>
-        <li><a href="electromagnetismo.html">Electromagnetismo</a></li>
-        <li><a href="ondas.html">Ondas</a></li>
-        <li><a href="relatividad.html">Relatividad</a></li>
-    </ul>
+    <div class="menu-grid">
+        <a href="hidrostatica.html">Hidrostática</a>
+        <a href="electrostatica.html">Electrostática</a>
+        <a href="electromagnetismo.html">Electromagnetismo</a>
+        <a href="ondas.html">Ondas</a>
+        <a href="relatividad.html">Relatividad</a>
+    </div>
 
-    <a href="https://drive.google.com/file/d/1PHfIYnNSYe-33NbsE2NkG9LVVpHUoMGC/view?usp=sharing" class="boton" target="_blank">📘 Apuntes Física 11</a>
-    <a href="https://drive.google.com/file/d/13IqRw4s8Ucf17Xmeyk9dGneC_6RDMnkV/view?usp=sharing" class="boton" target="_blank">📗 Fórmulas Física 11</a>
-    <a href="https://play.google.com/store/apps/details?id=com.vernyalfaroquesada.fisica11" class="boton" target="_blank">📱 Descargar versión Android</a>
-    <a href="https://vernymoe.github.io/CALCULADORA-F10/" class="enlace" target="_blank">📗 Calculadora Física 10</a>
+    <div class="botones-adicionales">
+        <a href="https://drive.google.com/file/d/1PHfIYnNSYe-33NbsE2NkG9LVVpHUoMGC/view?usp=sharing" target="_blank">📘 Apuntes Física 11</a>
+        <a href="https://drive.google.com/file/d/13IqRw4s8Ucf17Xmeyk9dGneC_6RDMnkV/view?usp=sharing" target="_blank">📗 Fórmulas Física 11</a>
+        <a href="https://play.google.com/store/apps/details?id=com.vernyalfaroquesada.fisica11" target="_blank">📱 Versión Android</a>
+        <a href="https://vernymoe.github.io/CALCULADORA-F10/" target="_blank">📗 Calculadora Física 10</a>
+    </div>
+
+    <div class="footer">
+        Prof. Verny Alfaro Quesada — <a href="mailto:vernymoe@gmail.com">vernymoe@gmail.com</a>
+    </div>
+
 </body>
 </html>
+
